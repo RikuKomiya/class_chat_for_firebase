@@ -15,14 +15,16 @@
               |{{line}}
               br
         v-divider
-    v-card.message-form(flat)
+    v-card.message-form(flat).pb-5
       v-card-text
-        v-row
-          v-col(cols="9")
-            v-textarea(rows="1" auto-grow clearable v-model="inputText" label="メッセージを入力")
-          v-col(cols="3" align-self="center")
-            v-btn(@click="submit" color="success") 
-              v-icon mdi-send
+        v-form
+          v-row(v-model="valid")
+            v-col(cols="9")
+              v-textarea(rows="1" auto-grow clearable v-model="inputText" label="メッセージを入力" counter="400"
+              :rules="messageRules")
+            v-col(cols="3" align-self="center")
+              v-btn(@click="submit" color="success" :disabled="inputText.length == 0 ||!valid") 
+                v-icon mdi-send
 </template>
 
 <script lang="ts">
@@ -39,6 +41,10 @@ interface Message {
 export default class Messages extends Vue {
   messages: Array<Message> = []
   inputText = ''
+  valid = false
+  messageRules = [
+    (v: string) => v.length < 400 || '400文字以内で入力してください'
+  ]
 
   async submit() {
     await db
