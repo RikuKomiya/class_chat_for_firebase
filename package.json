@@ -17,7 +17,10 @@
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/pwa": "^3.0.0-0",
     "firebase": "^7.14.2",
-    "nuxt": "^2.0.0"
+    "nuxt": "^2.0.0",
+    "pug": "^2.0.4",
+    "pug-loader": "^2.4.0",
+    "pug-plain-loader": "^1.0.0"
   },
   "devDependencies": {
     "@nuxt/typescript-build": "^0.6.0",
