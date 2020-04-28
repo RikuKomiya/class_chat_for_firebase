@@ -21,5 +21,9 @@ module.exports = {
   ],
   plugins: ['prettier', 'vue'],
   // add your custom rules here
-  rules: {}
+  rules: {
+    '@typescript-eslint/camelcase': 0,
+    '@typescript-eslint/explicit-function-return-type': 0,
+    '@typescript-eslint/member-delimiter-style': 0
+  }
 }
