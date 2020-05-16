@@ -20,8 +20,15 @@
         v-form
           v-row(v-model="valid")
             v-col(cols="9")
-              v-textarea(rows="1" auto-grow clearable v-model="inputText" label="メッセージを入力" counter="400"
-              :rules="messageRules")
+              v-textarea(
+                rows="1" 
+                auto-grow 
+                clearable 
+                v-model="inputText" 
+                label="メッセージを入力" 
+                counter="400"
+                :rules="messageRules"
+              )
             v-col(cols="3" align-self="center")
               v-btn(@click="submit" color="success" :disabled="inputText.length == 0 ||!valid") 
                 v-icon mdi-send
@@ -85,7 +92,7 @@ export default class Messages extends Vue {
 
 <style scoped>
 .message-list {
-  margin-bottom: 95px;
+  margin-bottom: 130px;
 }
 .message-form {
   position: fixed;
