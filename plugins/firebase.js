@@ -1,7 +1,7 @@
 import firebase from 'firebase'
 import 'firebase/auth'
 import 'firebase/messaging'
-import config from '~/firebase.config'
+import config from '~/firebase.config.js'
 
 if (!firebase.apps.length) {
   firebase.initializeApp(config)
