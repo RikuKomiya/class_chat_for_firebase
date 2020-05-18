@@ -1,8 +1,26 @@
-import * as functions from 'firebase-functions';
+import * as functions from 'firebase-functions'
+import * as admin from 'firebase-admin'
 
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
-//
-// export const helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// });
+admin.initializeApp(functions.config().firebase)
+
+export const registUsers = functions.auth.user().onCreate((user) => {
+  const { uid } = user
+  const db = admin.firestore()
+  const displayName = user.displayName || '匿名'
+  const email = user.email || ''
+
+  return db
+    .collection('users')
+    .doc(uid)
+    .set({
+      user_name: displayName,
+      email,
+      create_on: new Date()
+    })
+    .then(() => {
+      console.log('Success')
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+})
