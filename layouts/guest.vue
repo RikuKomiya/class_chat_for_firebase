@@ -9,13 +9,10 @@
   </v-app>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-@Component({
+<script>
+export default {
   components: {
     Header: () => import('~/components/layout/Header.vue')
-  },
-  middleware: ['auth']
-})
-export default class extends Vue {}
+  }
+}
 </script>

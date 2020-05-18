@@ -16,11 +16,14 @@
       v-app-bar-nav-icon(@click.stop="drawer = !drawer")
       img( class="logo" src="/logo.png" @click="$router.push('/')")
       v-spacer
+      v-btn(v-if="isLoggedin" @click="logout()") ログアウト
+      v-btn(v-else @click="$router.push('/auth/login')") ログイン
 
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
+import { userStore } from '~/store'
 
 @Component
 export default class extends Vue {
@@ -37,6 +40,14 @@ export default class extends Vue {
       to: '/inspire'
     }
   ]
+
+  get isLoggedin() {
+    return userStore.loggedIn
+  }
+
+  logout() {
+    userStore.logout()
+  }
 
   title = 'ClassChat'
 }
