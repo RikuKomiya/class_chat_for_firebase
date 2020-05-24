@@ -6,6 +6,7 @@ export interface UserState {
   token: string
   username: string
   uid: string
+  photoURL: string
 }
 
 @Module({
@@ -18,12 +19,16 @@ export default class User extends VuexModule implements UserState {
   token = localStorage.getItem('token') || ''
   username = ''
   uid = ''
+  photoURL = ''
 
   @Mutation
   public SET_USER(user: firebase.User) {
     this.loggedIn = true
     if (user.displayName != null) {
       this.username = user.displayName
+    }
+    if (user.photoURL != null) {
+      this.photoURL = user.photoURL
     }
     this.uid = user.uid
   }

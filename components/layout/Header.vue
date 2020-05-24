@@ -16,7 +16,8 @@
       v-app-bar-nav-icon(@click.stop="drawer = !drawer")
       img( class="logo" src="/logo.png" @click="$router.push('/')")
       v-spacer
-      v-btn(v-if="isLoggedin" @click="logout()") ログアウト
+      v-avatar(v-if="isLoggedin" @click="logout()")
+        v-img(:src="avatar")
       v-btn(v-else @click="$router.push('/auth/login')") ログイン
 
 </template>
@@ -41,6 +42,10 @@ export default class extends Vue {
     }
   ]
 
+  get avatar() {
+    return userStore.photoURL
+  }
+
   get isLoggedin() {
     return userStore.loggedIn
   }
@@ -55,8 +60,6 @@ export default class extends Vue {
 
 <style scoped>
 .logo {
-  height: 100px;
-  width: 100px;
   cursor: pointer;
 }
 </style>

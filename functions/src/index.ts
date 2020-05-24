@@ -8,6 +8,7 @@ export const registUsers = functions.auth.user().onCreate((user) => {
   const db = admin.firestore()
   const displayName = user.displayName || '匿名'
   const email = user.email || ''
+  const status = 0
 
   return db
     .collection('users')
@@ -15,6 +16,7 @@ export const registUsers = functions.auth.user().onCreate((user) => {
     .set({
       user_name: displayName,
       email,
+      status,
       create_on: new Date()
     })
     .then(() => {
