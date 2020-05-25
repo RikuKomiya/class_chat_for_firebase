@@ -9,14 +9,15 @@ export default function({ redirect }) {
         uid: user.uid,
         photoURL: user.photoURL
       })
-      db.collection('users')
-        .doc(user.uid)
-        .get()
-        .then((data) => {
-          if (data.data().status === 0) {
-            redirect('/users/edit')
-          }
-        })
+      userStore.getCourses()
+      // db.collection('users')
+      //   .doc(user.uid)
+      //   .get()
+      //   .then((data) => {
+      //     if (data.data().status === 0) {
+      //       redirect('/users/edit')
+      //     }
+      //   })
     } else {
       redirect('/auth/login')
     }

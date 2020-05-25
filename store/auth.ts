@@ -1,5 +1,5 @@
 import { Mutation, Action, VuexModule, Module } from 'vuex-module-decorators'
-import { auth } from '~/plugins/firebase'
+import { auth, db } from '~/plugins/firebase'
 
 export interface UserState {
   loggedIn: boolean
@@ -7,6 +7,17 @@ export interface UserState {
   username: string
   uid: string
   photoURL: string
+  takingCourses: { [key: string]: { [key: string]: Course } }
+}
+interface Course {
+  roomId: string
+  name: string
+  professor: string[]
+  day: string
+  period: string
+  sem: string
+  campus: string
+  faculty: string
 }
 
 @Module({
@@ -20,6 +31,10 @@ export default class User extends VuexModule implements UserState {
   username = ''
   uid = ''
   photoURL = ''
+  takingCourses = {
+    '2020_spring': {},
+    '2020_fall': {}
+  }
 
   @Mutation
   public SET_USER(user: firebase.User) {
@@ -34,6 +49,23 @@ export default class User extends VuexModule implements UserState {
   }
 
   @Mutation
+  public SET_COURSES(course: { [key: string]: Course }) {
+    this.takingCourses['2020_spring'] = {
+      ...this.takingCourses['2020_spring'],
+      ...course
+    }
+  }
+
+  @Mutation
+  public DELETE_COURSE(courseId: string) {
+    const course = this.takingCourses['2020_spring']
+    delete course[courseId]
+    this.takingCourses['2020_spring'] = {
+      ...course
+    }
+  }
+
+  @Mutation
   public LOGOUT() {
     this.loggedIn = false
     this.username = ''
@@ -42,6 +74,23 @@ export default class User extends VuexModule implements UserState {
   @Action({})
   public getUser(user: firebase.User) {
     this.SET_USER(user)
+  }
+
+  @Action({ rawError: true })
+  public getCourses() {
+    db.collection('users')
+      .doc(this.uid)
+      .collection('2020_spring')
+      .onSnapshot((snapshot) => {
+        const courses = {}
+        snapshot.docChanges().forEach((change) => {
+          if (change.type == 'added') {
+            const course = change.doc.data()
+            courses[change.doc.id] = course
+          }
+        })
+        this.context.commit('SET_COURSES', courses)
+      })
   }
 
   @Action({})
