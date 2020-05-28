@@ -14,7 +14,7 @@
             v-list-item-title(v-text="item.title")
     v-app-bar(dark fixed app color="#AB47BC")
       v-app-bar-nav-icon(@click.stop="drawer = !drawer")
-      img( class="logo" src="/logo.png" @click="$router.push('/')")
+      img( class="logo" src="/logo.png" @click="$router.push('/dashbord')")
       v-spacer
       v-avatar(v-if="isLoggedin" @click="logout()")
         v-img(:src="avatar")
@@ -33,7 +33,7 @@ export default class extends Vue {
     {
       icon: 'mdi-apps',
       title: 'Welcome',
-      to: '/'
+      to: '/dashbord'
     },
     {
       icon: 'mdi-chart-bubble',
