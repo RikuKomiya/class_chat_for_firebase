@@ -1,24 +1,24 @@
 <template lang="pug">
   v-dialog(v-model="dialog")
-    v-card(style="height:90vh;")
+    v-card.pb-5(style="height:93vh;")
       v-card-title.headline {{day}}曜日 {{period}}限目
+        v-spacer
+        v-btn(@click="dialog = false")
+          v-icon mdi-close
       v-card-text
         v-text-field(v-model="name" append-icon="mdi-magnify" label="授業名/教授名"  hide-details outlined)
         v-row(align="center")
-          //- v-col(class="d-flex" cols="6" sm="4")
-          //-   v-select(:items="items" label="年度" outlined hide-details)
           v-col(class="d-flex" cols="5")
-            v-select(:items="items" label="キャンパス" outlined hide-details)
-          //- v-col(class="d-flex" cols="6" sm="4")
-          //-   v-select(:items="items" label="学期" outlined hide-details)
+            v-select(:items="campuses" v-model="campus" label="キャンパス" @input="search()" outlined hide-details)
           v-col(class="d-flex" cols="5")
-            v-select(:items="items" label="学部" outlined hide-details)
+            v-select(:items="faculties" v-model="faculty" label="学部" @input="search()" outlined hide-details)
           v-col(class="d-flex" cols="2")
             v-btn(@click="search()" class="primary") 検索
+      p.ml-5 検索結果 {{totalHits}}件
         v-divider
-      v-card-text(v-show="courses.length !== 0").scrollable
+      v-card-text(v-show="courses.length !== 0" id="scrollable")
         v-list(two-line)
-          v-list-item-group(multple actve-class="pink--text")
+          v-list-item-group(multple actve-class="pink--text" )
             template(v-for="course in courses")
               v-list-item(:key="course.roomId" @click="handleClick(course)")
                 template(v-slot:default="{active,toggle}")
@@ -27,11 +27,13 @@
                     v-list-item-title(v-text="course.name")
                     v-list-item-subtitle(v-text="professors(course)")
               v-divider
+        nuxt-link(to="#first")
+        .text-center
+          v-pagination(v-model="selectPage" :length="pages" @input="search()")      
       v-card-text(v-show="courses.length === 0")
         .text-center
           p 検索してください
 </template>
-
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import { userStore } from '../store'
@@ -47,20 +49,38 @@ interface Course {
   campus: string
   faculty: string
 }
-const index = client.initIndex('rikkyo_2020')
+
+interface University {
+  faculties: string[]
+}
+
+const university = 'rikkyo'
+const index = client.initIndex(`${university}_2020`)
 @Component
 export default class Search extends Vue {
   dialog = false
   day = ''
   period = ''
-  sum = ''
-  year = ''
+  sem = ''
+  year = '2020'
   items = []
   name = ''
+  selectPage = 1
+  pages = 0
+  totalHits = 0
+  faculties = []
+  faculty = ''
+  campus = ''
+  campuses = []
+  university: University = { faculties: [] }
   courses: Array<Course> = []
 
+  get page() {
+    return this.selectPage - 1
+  }
+
   professors(course: Course) {
-    return course.professor.join(',')
+    return course.professor.join(', ')
   }
 
   handleClick(course: Course) {
@@ -84,13 +104,27 @@ export default class Search extends Vue {
     this.dialog = false
   }
 
+  get filter() {
+    let base = `period:${this.period} AND day:${this.day} AND sem:${this.sem}`
+    if (this.campus) {
+      base += ` AND campus:${this.campus}`
+    }
+    if (this.faculty) {
+      base += ` AND facluty:${this.faculty}`
+    }
+    return base
+  }
+
   async search() {
     await index
       .search(this.name, {
-        filters: `period:${this.period} AND day:${this.day}`
+        filters: this.filter,
+        page: this.page
       })
       .then((res) => {
         this.courses = []
+        this.pages = res.nbPages - 1
+        this.totalHits = res.nbHits
         res.hits.forEach((data) => {
           this.courses.push({
             roomId: data.objectID,
@@ -103,13 +137,14 @@ export default class Search extends Vue {
             faculty: data.facluty
           })
         })
+        document.getElementById('scrollable')!.scrollTop = 0
       })
   }
 }
 </script>
 
 <style scoped>
-.scrollable {
+#scrollable {
   overflow: auto;
   height: 65%;
 }
