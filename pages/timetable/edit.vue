@@ -6,8 +6,8 @@ div
         v-tab(v-for="sem in sems" :key="sem")
           |{{sem}}学期
       v-spacer
-      v-btn
-        nuxt-link(to="/dashbord") 編集完了
+      v-btn(@click="$router.push('/dashbord')")
+        |編集完了
         //- v-tooltip(bottom)
         //-   template(v-slot:activator="{on}")
         //-     v-btn(dark fab v-on="on" @click="onEdit()")
@@ -25,7 +25,7 @@ div
               td {{period}}
               td(v-for="day in days")
                 v-hover(v-slot:default="{ hover }" :disabled="!edit" v-if="!!courses[`${day}_${period}`]")
-                  v-card(color="red" height="12.5vh" :elevation="hover ? 16 : 2")
+                  v-card(:color="courses[`${day}_${period}`].color" height="12.5vh" :elevation="hover ? 16 : 2")
                     v-card-text
                       p.white--text.font-weight-black {{courses[`${day}_${period}`].name}}
                     v-overlay(absolute :value="hover")
@@ -83,6 +83,7 @@ export default class extends Vue {
     this.$refs.search.faculty = ''
     this.$refs.search.campuses = this.campus
     this.$refs.search.campus = ''
+    this.$refs.search.name = ''
     this.$refs.search.search()
   }
 
