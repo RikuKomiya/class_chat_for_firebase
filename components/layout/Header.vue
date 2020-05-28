@@ -34,11 +34,6 @@ export default class extends Vue {
       icon: 'mdi-apps',
       title: 'Welcome',
       to: '/dashbord'
-    },
-    {
-      icon: 'mdi-chart-bubble',
-      title: 'Inspire',
-      to: '/inspire'
     }
   ]
 
