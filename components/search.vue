@@ -3,7 +3,7 @@
     v-card.pb-5(style="height:93vh;")
       v-card-title.headline {{day}}曜日 {{period}}限目
         v-spacer
-        v-btn(@click="dialog = false")
+        v-btn(@click="dialog = false" color="white")
           v-icon mdi-close
       v-card-text
         v-text-field(v-model="name" append-icon="mdi-magnify" label="授業名/教授名"  hide-details outlined)
@@ -54,6 +54,10 @@ interface University {
   faculties: string[]
 }
 
+function randomInt(max: number, min: number): number {
+  return Math.floor(Math.random() * (max + 1 - min)) + min
+}
+
 const university = 'rikkyo'
 const index = client.initIndex(`${university}_2020`)
 @Component
@@ -74,6 +78,20 @@ export default class Search extends Vue {
   campuses = []
   university: University = { faculties: [] }
   courses: Array<Course> = []
+  colors = [
+    'red',
+    'pink',
+    'purple',
+    'indigo',
+    'blue',
+    'cyan',
+    'teal',
+    'light-green',
+    'lime',
+    'yellow',
+    'orange',
+    'amber'
+  ]
 
   get page() {
     return this.selectPage - 1
@@ -84,6 +102,7 @@ export default class Search extends Vue {
   }
 
   handleClick(course: Course) {
+    const n = randomInt(0, 11)
     db.collection('users')
       .doc(userStore.uid)
       .collection('2020_spring')
@@ -96,7 +115,8 @@ export default class Search extends Vue {
         period: course.period,
         sem: course.sem,
         campus: course.campus,
-        faculty: course.faculty
+        faculty: course.faculty,
+        color: this.colors[n]
       })
       .then(() => {
         console.log('success')
