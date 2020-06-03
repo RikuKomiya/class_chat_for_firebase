@@ -1,8 +1,27 @@
 <template lang="pug">
-  div
+div
+  v-card.message-form(flat).pb-5
     v-subheader {{year}}{{sem}} {{day}}ー{{period}} {{name}} / {{professors}}
     v-divider
-    .text-center.my-8(v-if="messages.length === 0")
+    v-card-text
+      v-form
+        v-row(v-model="valid")
+          v-col(cols="9")
+            v-textarea(
+              rows="1" 
+              auto-grow 
+              clearable 
+              v-model="inputText" 
+              label="メッセージを入力" 
+              counter="400"
+              :rules="messageRules"
+            )
+          v-col(cols="3" align-self="center")
+            v-btn(@click="submit" color="success" :disabled="inputText.length == 0 ||!valid") 
+              v-icon mdi-send
+  v-divider
+  v-card(flat style="min-height: 70vh;")
+    .text-center.pt-8(v-if="messages.length === 0")
       p 最初の投稿をしてみよう
     .message-list
       div(v-for="message in messages")
@@ -20,23 +39,7 @@
                   |{{line}}
                   br
         v-divider
-    v-card.message-form(flat).pb-5
-      v-card-text
-        v-form
-          v-row(v-model="valid")
-            v-col(cols="9")
-              v-textarea(
-                rows="1" 
-                auto-grow 
-                clearable 
-                v-model="inputText" 
-                label="メッセージを入力" 
-                counter="400"
-                :rules="messageRules"
-              )
-            v-col(cols="3" align-self="center")
-              v-btn(@click="submit" color="success" :disabled="inputText.length == 0 ||!valid") 
-                v-icon mdi-send
+
 </template>
 
 <script lang="ts">
@@ -145,10 +148,5 @@ export default class Messages extends Vue {
 <style scoped>
 .message-list {
   margin-bottom: 130px;
-}
-.message-form {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
 }
 </style>
