@@ -19,17 +19,17 @@ export default {
           signInOptions: [authProviders.Email, authProviders.Google],
           callbacks: {
             signInSuccessWithAuthResult: () => {
-              window.location.href = '/'
+              window.location.href = '/dashbord'
               return false
             }
           },
-          signInSuccessUrl: '/',
+          signInSuccessUrl: '/dashbord',
           signInFlow: 'popup'
         }
 
         ui.start('#firebaseui-auth-container', config)
       } else {
-        this.$router.push('/')
+        this.$router.push('/dashbord')
       }
     })
   }

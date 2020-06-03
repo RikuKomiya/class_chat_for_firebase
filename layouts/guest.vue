@@ -21,7 +21,7 @@ export default {
 
 <style scoped>
 .bg {
-  height: 100vh;
+  height: 100%;
   width: 100vw;
   background-image: linear-gradient(to top, #fad0c4 0%, #ffd1ff 100%);
 }
