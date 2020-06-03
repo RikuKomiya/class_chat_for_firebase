@@ -6,13 +6,9 @@ div
         v-tab(v-for="sem in sems" :key="sem")
           |{{sem}}学期
       v-spacer
-      v-btn(@click="$router.push('/dashbord')")
+      v-btn.font-weight-black.white--text(@click="$router.push('/dashbord')" color="green")
+        v-icon mdi-check
         |編集完了
-        //- v-tooltip(bottom)
-        //-   template(v-slot:activator="{on}")
-        //-     v-btn(dark fab v-on="on" @click="onEdit()")
-        //-       v-icon mdi-pencil
-        //-   span 時間割を編集
     v-divider
     v-tabs-items(v-model="selectedSem")
       v-tab-item

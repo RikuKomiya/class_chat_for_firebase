@@ -1,19 +1,15 @@
 <template lang="pug">
 div
-  h1.headline.my-8 時間割
+  h1.headline.my-8.white--text.font-weight-black トップページ
   v-card
     v-app-bar(color="white" flat)
       v-tabs(v-model="selectedSem")
         v-tab(v-for="sem in sems" :key="sem")
           |{{sem}}学期
       v-spacer
-      v-btn(@click="$router.push('/timetable/edit')")
+      v-btn.font-weight-black(@click="$router.push('/timetable/edit')" color="primary")
+        v-icon mdi-pencil
         |時間割を編集
-        //- v-tooltip(bottom)
-        //-   template(v-slot:activator="{on}")
-        //-     v-btn(dark fab v-on="on" @click="onEdit()")
-        //-       v-icon mdi-pencil
-        //-   span 時間割を編集
     v-divider
     v-tabs-items(v-model="selectedSem")
       v-tab-item
