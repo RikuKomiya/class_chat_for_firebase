@@ -16,8 +16,30 @@
       v-app-bar-nav-icon(@click.stop="drawer = !drawer")
       img( class="logo" src="/logo.png" @click="$router.push('/dashbord')")
       v-spacer
-      v-avatar(v-if="isLoggedin" @click="logout()")
-        v-img(:src="avatar")
+      v-menu(:close-on-content-click="false" :nudge-width="200" v-if="isLoggedin")
+        template(v-slot:activator="{on}")
+          v-avatar(v-on="on")
+            v-img(:src="avatar")
+        v-card
+          v-list
+            v-list-item
+              v-list-item-avatar
+                img(:src="avatar")
+              v-list-item-content
+                v-list-item-title {{username}}
+          v-divider
+          v-list
+            v-list-item-group
+              v-list-item
+                v-list-item-icon
+                  v-icon mdi-cog
+                v-list-item-content
+                  |ユーザー設定
+              v-list-item(@click="logout()")
+                v-list-item-icon
+                  v-icon mdi-logout
+                v-list-item-content
+                  |ログアウト
       v-btn(v-else @click="$router.push('/auth/login')") ログイン
 
 </template>
@@ -43,6 +65,10 @@ export default class extends Vue {
 
   get isLoggedin() {
     return userStore.loggedIn
+  }
+
+  get username() {
+    return userStore.username
   }
 
   logout() {
