@@ -2,16 +2,25 @@
   .header
     v-navigation-drawer(v-model="drawer" fixed app)
       v-list
-        v-list-item(
-        v-for="(item, i) in items"
-        :key="i"
-        :to="item.to"
-        router
-        exact)
+        v-list-item(to="/dashbord" router exact)
           v-list-item-action
-            v-icon {{ item.icon }}
+            v-icon mdi-home
           v-list-item-content
-            v-list-item-title(v-text="item.title")
+            v-list-item-title Home
+        v-list-item(to="/timetable/edit" router exact)
+          v-list-item-action
+            v-icon mdi-timetable
+          v-list-item-content
+            v-list-item-title 時間割編集
+      v-list(two-line subheader)
+        v-list-group(multple value="true" no-action)
+          template(v-slot:activator)
+            v-list-item-content
+              v-list-item-title マイ講義一覧
+          v-list-item(:key="course.roomId" :to="'/rooms/' + course.roomId" router v-for="(course,index) in courses")
+            v-list-item-content
+              v-list-item-title(v-text="index + course.name")
+              v-list-item-subtitle(v-text="professors(course)")
     v-app-bar(dark fixed app color="#AB47BC")
       v-app-bar-nav-icon(@click.stop="drawer = !drawer")
       img( class="logo" src="/logo.png" @click="$router.push('/dashbord')")
@@ -53,11 +62,19 @@ export default class extends Vue {
   drawer = false
   items = [
     {
-      icon: 'mdi-apps',
-      title: 'Welcome',
+      icon: 'mdi-home',
+      title: 'Home',
       to: '/dashbord'
     }
   ]
+
+  get courses() {
+    return userStore.takingCourses['2020_spring']
+  }
+
+  professors(course: Course) {
+    return course.professor.join(', ')
+  }
 
   get avatar() {
     return userStore.photoURL
