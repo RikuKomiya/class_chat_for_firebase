@@ -6,14 +6,14 @@
         v-btn(@click="dialog = false" icon)
           v-icon mdi-close
       v-card-text
-        v-text-field(v-model="name" append-icon="mdi-magnify" label="授業名/教授名"  hide-details outlined)
+        v-text-field(v-model="name" append-icon="mdi-magnify" label="授業名/教授名" @input="search()"  hide-details outlined)
         v-row(align="center")
           v-col(class="d-flex" cols="5")
             v-select(:items="campuses" v-model="campus" label="キャンパス" @input="search()" outlined hide-details)
           v-col(class="d-flex" cols="5")
             v-select(:items="faculties" v-model="faculty" label="学部" @input="search()" outlined hide-details)
           v-col(class="d-flex" cols="2")
-            v-btn(@click="search()" class="primary") 検索
+            v-btn(@click="reset()" class="primary") 検索条件をリセット
       p.ml-5 検索結果 {{totalHits}}件
         v-divider
       v-card-text(v-show="courses.length !== 0" id="scrollable")
@@ -130,9 +130,15 @@ export default class Search extends Vue {
       base += ` AND campus:${this.campus}`
     }
     if (this.faculty) {
-      base += ` AND facluty:${this.faculty}`
+      base += ` AND facluty:"${this.faculty}"`
     }
     return base
+  }
+
+  reset() {
+    this.campus = ''
+    this.faculty = ''
+    this.name = ''
   }
 
   async search() {
@@ -143,7 +149,7 @@ export default class Search extends Vue {
       })
       .then((res) => {
         this.courses = []
-        this.pages = res.nbPages - 1
+        this.pages = res.nbPages
         this.totalHits = res.nbHits
         res.hits.forEach((data) => {
           this.courses.push({
