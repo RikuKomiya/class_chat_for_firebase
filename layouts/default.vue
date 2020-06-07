@@ -8,6 +8,7 @@
         </v-container>
       </v-content>
     </div>
+    <Footer />
   </v-app>
 </template>
 
@@ -15,7 +16,8 @@
 import { Component, Vue } from 'vue-property-decorator'
 @Component({
   components: {
-    Header: () => import('~/components/layout/Header.vue')
+    Header: () => import('~/components/layout/Header.vue'),
+    Footer: () => import('~/components/layout/Footer.vue')
   },
   middleware: ['auth']
 })
