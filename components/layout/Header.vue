@@ -22,8 +22,8 @@
               v-list-item-title(v-text="index + course.name")
               v-list-item-subtitle(v-text="professors(course)")
     v-app-bar(dark fixed app color="#AB47BC")
-      v-app-bar-nav-icon(@click.stop="drawer = !drawer")
-      img( class="logo" src="/logo.png" @click="$router.push('/dashbord')")
+      v-app-bar-nav-icon(@click.stop="drawer = !drawer" v-if="isLoggedin")
+      img( class="logo" src="/logo.png" @click="$router.push('/')")
       v-spacer
       v-menu(:close-on-content-click="false" :nudge-width="200" v-if="isLoggedin")
         template(v-slot:activator="{on}")

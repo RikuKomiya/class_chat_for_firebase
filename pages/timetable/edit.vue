@@ -20,13 +20,12 @@ div
             tr.text-center(v-for="period in periods")
               td {{period}}
               td(v-for="day in days")
-                v-hover(v-slot:default="{ hover }" :disabled="!edit" v-if="!!courses[`${day}_${period}`]")
-                  v-card(:color="courses[`${day}_${period}`].color" height="12.5vh" :elevation="hover ? 16 : 2")
-                    v-card-text
-                      p.white--text.font-weight-black {{courses[`${day}_${period}`].name}}
-                    v-overlay(absolute :value="hover")
-                      v-btn(outlined fab @click="deleteCourse(`${day}_${period}`)")
-                        v-icon mdi-close
+                v-card(v-if="!!courses[`${day}_${period}`]" :color="courses[`${day}_${period}`].color" height="12.5vh" :elevation="hover ? 16 : 2")
+                  v-card-text
+                    p.white--text.font-weight-black {{courses[`${day}_${period}`].name}}
+                  v-overlay(absolute)
+                    v-btn(outlined fab @click="deleteCourse(`${day}_${period}`)")
+                      v-icon mdi-close
                 v-hover(v-slot:default="{ hover }" v-else v-show="edit")
                   v-card(@click="handleEdit(period, day)" height="12.5vh" :elevation="hover ? 16 : 2").edit
                     v-card-text

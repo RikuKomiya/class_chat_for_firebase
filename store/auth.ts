@@ -1,3 +1,4 @@
+import { userInfo, UserInfo } from 'os'
 import { Mutation, Action, VuexModule, Module } from 'vuex-module-decorators'
 import { auth, db } from '~/plugins/firebase'
 
@@ -8,6 +9,17 @@ export interface UserState {
   uid: string
   photoURL: string
   takingCourses: { [key: string]: { [key: string]: Course } }
+  status: number
+  faculty: string
+  university_name: string
+  university: string
+}
+
+interface userInfo {
+  status: number
+  faculty: string
+  university_name: string
+  university: string
 }
 interface Course {
   roomId: string
@@ -31,6 +43,10 @@ export default class User extends VuexModule implements UserState {
   username = ''
   uid = ''
   photoURL = ''
+  faculty = ''
+  status = 1
+  university_name = ''
+  university = ''
   takingCourses = {
     '2020_spring': {},
     '2020_fall': {}
@@ -63,6 +79,14 @@ export default class User extends VuexModule implements UserState {
     this.takingCourses['2020_spring'] = {
       ...course
     }
+  }
+
+  @Mutation
+  public SET_USERINFO(userInfo: userInfo) {
+    this.university = userInfo.university
+    this.status = userInfo.status
+    this.university_name = userInfo.university_name
+    this.faculty = userInfo.faculty
   }
 
   @Mutation

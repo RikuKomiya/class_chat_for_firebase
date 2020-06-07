@@ -30,7 +30,13 @@ interface University {
   faculties: string[]
 }
 
-@Component
+@Component({
+  middleware({ redirect }) {
+    if (userStore.status !== 0) {
+      redirect('/dashbord')
+    }
+  }
+})
 export default class extends Vue {
   name = ''
   selectedUniversity = ''
@@ -125,7 +131,7 @@ export default class extends Vue {
             { merge: true }
           )
           .then(() => {
-            this.$router.push('/')
+            this.$router.push('/timetable/edit')
           })
       })
       .catch((error) => {
