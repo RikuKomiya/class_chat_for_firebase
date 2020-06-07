@@ -19,6 +19,7 @@
     "algoliasearch": "^4.2.0",
     "firebase": "^7.14.2",
     "firebaseui": "^4.5.0",
+    "moment": "^2.26.0",
     "nuxt": "^2.0.0",
     "pug": "^2.0.4",
     "pug-loader": "^2.4.0",

@@ -3,7 +3,7 @@
     v-card.pb-5(style="height:93vh;")
       v-card-title.headline {{day}}曜日 {{period}}限目
         v-spacer
-        v-btn(@click="dialog = false" color="white")
+        v-btn(@click="dialog = false" icon)
           v-icon mdi-close
       v-card-text
         v-text-field(v-model="name" append-icon="mdi-magnify" label="授業名/教授名"  hide-details outlined)
