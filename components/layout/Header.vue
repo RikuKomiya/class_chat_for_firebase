@@ -57,6 +57,16 @@
 import { Vue, Component } from 'nuxt-property-decorator'
 import { userStore } from '~/store'
 
+interface Course {
+  roomId: string
+  name: string
+  professor: string[]
+  day: string
+  period: string
+  sem: string
+  campus: string
+  faculty: string
+}
 @Component
 export default class extends Vue {
   drawer = false

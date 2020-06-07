@@ -42,6 +42,20 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import { userStore } from '~/store'
 import { db } from '~/plugins/firebase'
 
+interface SearchComp {
+  dialog: boolean
+  period: string
+  day: string
+  sem: string
+  selectPage: number
+  faculties: Array<string>
+  faculty: string
+  campuses: Array<string>
+  campus: string
+  name: string
+  search: () => {}
+}
+
 const university = 'rikkyo'
 @Component({
   components: {
@@ -68,18 +82,23 @@ export default class extends Vue {
     this.edit = !this.edit
   }
 
+  get refs(): any {
+    return this.$refs
+  }
+
   handleEdit(period: string, day: string) {
-    this.$refs.search.dialog = true
-    this.$refs.search.period = period
-    this.$refs.search.day = day
-    this.$refs.search.sem = this.sems[this.selectedSem]
-    this.$refs.search.selectPage = 1
-    this.$refs.search.faculties = this.faculties
-    this.$refs.search.faculty = ''
-    this.$refs.search.campuses = this.campus
-    this.$refs.search.campus = ''
-    this.$refs.search.name = ''
-    this.$refs.search.search()
+    const search: SearchComp = this.refs().search
+    search.dialog = true
+    search.period = period
+    search.day = day
+    search.sem = this.sems[this.selectedSem]
+    search.selectPage = 1
+    search.faculties = this.faculties
+    search.faculty = ''
+    search.campuses = this.campus
+    search.campus = ''
+    search.name = ''
+    search.search()
   }
 
   deleteCourse(id: string) {
@@ -100,10 +119,14 @@ export default class extends Vue {
       .doc(`${university}`)
       .get()
       .then((data) => {
-        data.data().faculties.forEach((data: string) => {
+        const doc = data.data()
+        if (!doc) {
+          return
+        }
+        doc.faculties.forEach((data: string) => {
           faculties.push(data)
         })
-        data.data().campus.forEach((data: string) => {
+        doc.campus.forEach((data: string) => {
           campus.push(data)
         })
       })

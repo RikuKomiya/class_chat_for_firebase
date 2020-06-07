@@ -1,4 +1,3 @@
-import { userInfo, UserInfo } from 'os'
 import { Mutation, Action, VuexModule, Module } from 'vuex-module-decorators'
 import { auth, db } from '~/plugins/firebase'
 
@@ -15,7 +14,7 @@ export interface UserState {
   university: string
 }
 
-interface userInfo {
+interface UserInfo {
   status: number
   faculty: string
   university_name: string
@@ -74,7 +73,7 @@ export default class User extends VuexModule implements UserState {
 
   @Mutation
   public DELETE_COURSE(courseId: string) {
-    const course = this.takingCourses['2020_spring']
+    const course: { [key: string]: Course } = this.takingCourses['2020_spring']
     delete course[courseId]
     this.takingCourses['2020_spring'] = {
       ...course
@@ -82,7 +81,7 @@ export default class User extends VuexModule implements UserState {
   }
 
   @Mutation
-  public SET_USERINFO(userInfo: userInfo) {
+  public SET_USERINFO(userInfo: UserInfo) {
     this.university = userInfo.university
     this.status = userInfo.status
     this.university_name = userInfo.university_name
@@ -106,10 +105,21 @@ export default class User extends VuexModule implements UserState {
       .doc(this.uid)
       .collection('2020_spring')
       .onSnapshot((snapshot) => {
-        const courses = {}
+        const courses: { [key: string]: Course } = {}
         snapshot.docChanges().forEach((change) => {
-          if (change.type == 'added') {
-            const course = change.doc.data()
+          if (change.type === 'added') {
+            const doc = change.doc.data()
+            const course = {
+              roomId: doc.roomId,
+              name: doc.name,
+              professor: doc.professor,
+              day: doc.day,
+              period: doc.period,
+              sem: doc.sem,
+              campus: doc.campus,
+              faculty: doc.faculty,
+              color: doc.color
+            }
             courses[change.doc.id] = course
           }
         })

@@ -118,7 +118,7 @@ interface Message {
   userName: string
   avatar: string
   replyCount: number
-  created_at: Date
+  created_at: Date | null
 }
 
 @Component
@@ -132,6 +132,7 @@ export default class Messages extends Vue {
     uid: '',
     userName: '',
     avatar: '',
+    replyCount: 0,
     created_at: null
   }
 
@@ -146,7 +147,7 @@ export default class Messages extends Vue {
   valid = false
   replyValid = false
   messageRules = [
-    // (v: string) => (v && v.length < 400) || '400文字以内で入力してください'
+    (v: string) => (v && v.length < 400) || '400文字以内で入力してください'
   ]
 
   write = false
@@ -257,6 +258,9 @@ export default class Messages extends Vue {
     ref.get().then((doc) => {
       if (doc.exists) {
         const data = doc.data()
+        if (!data) {
+          return
+        }
         this.year = data.year
         this.sem = data.sem
         this.day = data.day

@@ -50,6 +50,17 @@ interface Course {
   faculty: string
 }
 
+interface AlogliaCourse extends Course {
+  objectID: string
+  facluty: string
+}
+
+interface AlogliaResult {
+  nbPages: number
+  nbHits: number
+  hits: Array<AlogliaCourse>
+}
+
 interface University {
   faculties: string[]
 }
@@ -147,7 +158,7 @@ export default class Search extends Vue {
         filters: this.filter,
         page: this.page
       })
-      .then((res) => {
+      .then((res: AlogliaResult) => {
         this.courses = []
         this.pages = res.nbPages
         this.totalHits = res.nbHits
