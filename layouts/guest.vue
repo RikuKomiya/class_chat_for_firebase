@@ -7,6 +7,7 @@
           <nuxt />
         </v-container>
       </v-content>
+      <Footer />
     </div>
   </v-app>
 </template>
@@ -14,7 +15,8 @@
 <script>
 export default {
   components: {
-    Header: () => import('~/components/layout/Header.vue')
+    Header: () => import('~/components/layout/Header.vue'),
+    Footer: () => import('~/components/layout/Footer.vue')
   }
 }
 </script>

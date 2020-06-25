@@ -1,5 +1,6 @@
-<template>
-  <firebase-auth />
+<template lang="pug">
+div(style="height: 70vh;")
+  firebase-auth.mt-12
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-dialog(v-model="dialog")
+  v-dialog(v-model="dialog" fullscreen)
     v-card.pb-5(style="height:93vh;")
       v-card-title.headline {{day}}曜日 {{period}}限目
         v-spacer
@@ -8,11 +8,11 @@
       v-card-text
         v-text-field(v-model="name" append-icon="mdi-magnify" label="授業名/教授名" @input="search()"  hide-details outlined)
         v-row(align="center")
-          v-col(class="d-flex" cols="5")
+          v-col(class="d-flex" cols="6" md="5")
             v-select(:items="campuses" v-model="campus" label="キャンパス" @input="search()" outlined hide-details)
-          v-col(class="d-flex" cols="5")
+          v-col(class="d-flex" cols="6" md="5")
             v-select(:items="faculties" v-model="faculty" label="学部" @input="search()" outlined hide-details)
-          v-col(class="d-flex" cols="2")
+          v-col(class="d-flex" cols="12" md="2")
             v-btn(@click="reset()" class="primary") 検索条件をリセット
       p.ml-5 検索結果 {{totalHits}}件
         v-divider
@@ -27,7 +27,6 @@
                     v-list-item-title(v-text="course.name")
                     v-list-item-subtitle(v-text="professors(course)")
               v-divider
-        nuxt-link(to="#first")
         .text-center
           v-pagination(v-model="selectPage" :length="pages" @input="search()")      
       v-card-text(v-show="courses.length === 0")
@@ -183,6 +182,6 @@ export default class Search extends Vue {
 <style scoped>
 #scrollable {
   overflow: auto;
-  height: 65%;
+  height: 58%;
 }
 </style>

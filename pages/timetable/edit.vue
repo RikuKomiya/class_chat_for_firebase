@@ -87,7 +87,7 @@ export default class extends Vue {
   }
 
   handleEdit(period: string, day: string) {
-    const search: SearchComp = this.refs().search
+    const search: SearchComp = this.refs.search
     search.dialog = true
     search.period = period
     search.day = day
